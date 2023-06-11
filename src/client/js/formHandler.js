@@ -1,34 +1,30 @@
-import { checkForName } from "./nameChecker"
-
-export function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
 
-  // check what text was put into the form field
-  let formText = document.getElementById('inputURL').value
-  checkForName(formText)
-  fetch('http://localhost:8080/test', {
-    mode: "no-cors",
-    credentials: 'same-origin',
-    method: "POST",
-    header: {
-      "Content-Type": "application/json",
-      credentials: "same-origin",
-      'Access-Control-Allow-Origin': '*',
+  let formText = document.getElementById("inputURL").value;
+  if (formText.value != "") {
+    try {
+      const rawParam = await fetch("http://localhost:8080/api-param");
+      const { key } = await rawParam.json();
+      const formData = new FormData();
+      formData.append("key", key);
+      formData.append("txt", formText);
+      const requestOptions = {
+          method: 'POST',
+          body: formData,
+          redirect: 'follow'
+      };
+      const rawData = await fetch(`https://api.meaningcloud.com/sentiment-2.1`, requestOptions);
+      const data = await rawData.json();
+      console.log(data);
+      document.getElementById("results").innerHTML = data.subjectivity + " / " + data.score_tag + " - " + data.agreement + " (" + data.confidence + ")";
+    } catch (error) {
+      console.error(error);
+      document.getElementById("results").innerHTML = "Error!!! Please try again later";
     }
-  })
-    .then(res => res.json())
-    .then(async function (key) {
-      console.log(key);
-      const rawResponse = await fetch('https://api.meaningcloud.com/sentiment-2.1', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ key })
-      });
-      const respond = await rawResponse.json();
-      console.log(respond);
-      document.getElementById('results').innerHTML = res.message
-    })
+  } else {
+    document.getElementById("results").innerHTML = "Error!!! Please input text";
+  }
 }
+
+export { handleSubmit };

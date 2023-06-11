@@ -1,45 +1,28 @@
-/* Server & Routes Setup */
-// Express to run server and routes
-const express = require('express');
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
-// Start up an instance of app
+require("dotenv").config({ path: "./.env" });
+
 const app = express();
-
-/* Dependencies */
-const bodyParser = require('body-parser');
-
-// To get API key from .env
-const dotenv = require('dotenv');
-dotenv.config();
-
-/* Middleware*/
-// Here we are configuring express to use body-parser as middle-ware.
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(bodyParser.text());
 app.use(bodyParser.json());
 
-// Cors for cross origin allowance
-const cors = require('cors');
-app.use(cors());
+app.use(express.static("dist"));
 
-// Initialize the main project folder
-app.use(express.static('dist'));
-console.log(`Your API key is ${process.env.API_KEY}`);
+const apiKey = process.env.API_KEY;
+console.log(`Your api key is ${apiKey}`); // Used for testing API key entry
 
-// designates what port the app will listen to for incoming requests
+app.get("/", function (req, res) {
+  res.sendFile("dist/index.html");
+});
+
 app.listen(8080, function () {
-  console.log('Example app listening on port 8080!')
-})
+  console.log("Example app listening on port 8080!");
+});
 
-app.post('/test', function (req, res) {
+app.get("/api-param", async (req, res) => {
   res.status(200).send({ 'key': process.env.API_KEY })
-})
-app.get('/test', function (req, res) {
-  res.status(200).send({ 'key': process.env.API_KEY })
-})
-
-app.get('/', function (req, res) {
-  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-  console.log(fullUrl);
-  res.sendFile('dist/index.html')
-  // res.sendFile(path.resolve('src/client/views/index.html'))
-})
+});

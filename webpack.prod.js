@@ -3,14 +3,13 @@ const HtmlWebPackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const WorkboxPlugin = require("workbox-webpack-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 
 module.exports = {
   entry: './src/client/index.js',
   mode: 'production',
   output: {
-    clean: true,
-    libraryTarget: "this"
+    libraryTarget: 'var',
+    library: 'Client'
   },
   module: {
     rules: [
@@ -28,10 +27,6 @@ module.exports = {
           'css-loader',
           'sass-loader'
         ]
-      },
-      {
-        test: /\.(png|jpg|jpeg|gif|ico|svg)$/,
-        loader: 'file-loader',
       }
     ]
   },
@@ -39,7 +34,6 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/client/views/index.html",
       filename: "./index.html",
-      favicon: "./src/client/assets/images/favicon.svg"
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css"

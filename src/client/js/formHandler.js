@@ -1,8 +1,10 @@
+import { checkForName } from './nameChecker'
+
 async function handleSubmit(event) {
   event.preventDefault();
 
   let formText = document.getElementById("inputURL").value;
-  if (formText.value != "") {
+  if (checkForName(formText)) {
     try {
       const rawParam = await fetch("http://localhost:8080/api-param");
       const { key } = await rawParam.json();

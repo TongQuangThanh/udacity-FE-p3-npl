@@ -6,8 +6,7 @@ export function checkForName(inputText) {
         "Archer",
         "Georgiou"
     ]
-
-    if(names.includes(inputText)) {
+    if(!!inputText || names.includes(inputText)) {
       return true
     }
     return false

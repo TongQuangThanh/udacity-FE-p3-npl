@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Evaluate News NLP</title>
+    </head>
+
+    <body>
+
+        <header class="header">
+            <div class="logo">
+                
+            </div>
+            <div id="navigation">
+                NLP Search
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <form id="nlp-form" class="form" onsubmit="return Client.handleSubmit(event)">
+                    <input id="inputURL" type="text" name="input" value="Main dishes were quite good, but desserts were too sweet for me." placeholder="Please input text" required>
+                    <input class="button" type="submit" name="" value="submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                    <input class="button" type="submit" name="" value="submit with mock data response" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                </form>
+            </section>
+
+            <section id="response">
+                <strong>Form Results:</strong>
+                <div id="results"></div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="logo"></div>
+            <div>Footer</span>
+        </footer>
+        <!-- <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js')
+                .then(value => {
+                    console.log('register successfully', value)
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            }
+        </script> -->
+    </body>
+</html>
